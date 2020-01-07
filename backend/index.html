@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <title>BackEnd Test</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <p>Please insert the values as below described, use numbers only.</p>
+        <p><strong>Start Date:</strong></p>
+        <p>Year: <input type="number" min="0" step="1" id="sYear" name="sYear"/></p>
+        <p>Month: <input type="number" min="0" max="12" step="1" id="sMonth" name="sMonth"/></p>
+        <p>Day: <input type="number" min="0" step="1" id="sDay" name="sDay"/></p>
+        <br />
+        <p><strong>End Date:</strong></p>
+        <p>Year: <input type="number" min="0" step="1" id="eYear" name="eYear"/></p>
+        <p>Month: <input type="number" min="0" max="12" step="1"id="eMonth" name="eMonth"/></p>
+        <p>Day: <input type="number" min="0" step="1" id="eDay" name="eDay"/></p>
+        <br />
+        <p><strong>Total: <input type="number" min="0" step="1" id="total" name="total"/> </strong></p>    
+        <br />
+        <p><strong>Baseline: <input type="number" min="0" step="1" id="baseline" name="baseline"/> </strong></p>
+        <button id="result" onclick="checkInputs();">Get Array Result</button>
+        <br /><br /><br />
+        <strong>The result array will be printed below</strong>
+        <div id="arrayResult"></div>
+    </body>
+    <script type="text/javascript">
+        function checkInputs()
+        {
+            let allinputs = document.querySelectorAll('input[type="number"]');
+            let myLength = allinputs.length;
+            let input;
+
+            for (let i = 0; i < myLength; ++i) {
+                input = allinputs[i];
+                if (!input.value) {
+                    alert('Please make sure all the fields are filled.');
+                    return false;
+                }
+            }
+
+            let startDay = document.getElementById("sDay");
+            let endDay = document.getElementById("eDay");
+            let startMonth = document.getElementById("sMonth");
+            let endMonth = document.getElementById("eMonth");
+
+            if (startDay > 31 || endDay > 31 || endMonth > 12 || startMonth > 12) {
+                alert("Please make sure the dates have valid format.");
+            }
+
+            getDates();
+        }
+
+        function getDates()
+        {
+            let startYear = document.getElementById("sYear").value;
+            let startMonth = document.getElementById("sMonth").value;
+            let startDay = document.getElementById("sDay").value;
+
+            let endYear = document.getElementById("eYear").value;
+            let endMonth = document.getElementById("eMonth").value;
+            let endDay = document.getElementById("eDay").value;
+
+            let total = document.getElementById("total").value;
+            let baseline = document.getElementById("baseline").value;
+
+            let startDate = startYear + "-" + startMonth + "-" + startDay;
+            let endDate = endYear + "-" + endMonth + "-" + endDay;
+
+            let formData = new FormData();
+            formData.append("sDate", startDate);
+            formData.append("eDate", endDate);
+            formData.append("total", total);
+            formData.append("baseline", baseline);
+
+            let xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {};
+            xhr.open('POST', 'backend/getdates.php');
+            xhr.onload = function(){
+                document.getElementById("arrayResult").innerHTML = xhr.responseText;
+            };
+            xhr.send(formData);
+        }
+    </script>
+</html>

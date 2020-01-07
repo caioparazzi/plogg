@@ -80,22 +80,26 @@ class DateArray
 
     public function getDateArray()
     {
-        $sum = 0;
-
-        while (!($sum > $this->limitDown && $sum < $this->limitUp)) {
-            unset($validArray);
+        try {
             $sum = 0;
-            $individualValue = 0;
-            $validArray = $this->populateArray();
-            
-            if (!$validArray) {
-                return "Please check your parameters";
+
+            while (!($sum > $this->limitDown && $sum < $this->limitUp)) {
+                unset($validArray);
+                $sum = 0;
+                $individualValue = 0;
+                $validArray = $this->populateArray();
+                
+                if (!$validArray) {
+                    return "Please check your parameters";
+                }
+                
+                foreach ($validArray as $individualValue) {
+                    $sum = $sum + $individualValue;
+                }
             }
-            
-            foreach ($validArray as $individualValue) {
-                $sum = $sum + $individualValue;
-            }
+            return $validArray;
+        } catch (Exception $error) {
+            return false;
         }
-        return $validArray;
     }
 }
