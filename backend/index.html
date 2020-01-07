@@ -78,7 +78,7 @@
 
             let xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function() {};
-            xhr.open('POST', 'backend/getdates.php');
+            xhr.open('POST', '/backend/getdates.php');
             xhr.onload = function(){
                 document.getElementById("arrayResult").innerHTML = xhr.responseText;
             };
